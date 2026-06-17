@@ -19,13 +19,13 @@ an ARIMAX benchmark?
 | Policy Dummies | Manual | Regulatory shocks produce discontinuous price jumps |
 
 ## Results
-### 🔑 Feature Importance Analysis
+### Feature Importance Analysis
 
 The chart below shows the average gain contributions of our engineered features, highlighting the dominant structural drivers behind EUA price movements.
 
 ![XGBoost Feature Importance](figures/feature_importance.png)
 
-### 📊 Out-of-Sample Performance
+### Out-of-Sample Performance
 
 Our model's backtested predictions are plotted against actual historical prices across the holdout validation set.
 
