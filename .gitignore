@@ -1,0 +1,10 @@
+# Ignore raw data
+data/raw/
+
+# Ignore sensitive info
+.env
+
+# Ignore system files
+.ipynb_checkpoints/
+__pycache__/
+.DS_Store
