@@ -5,18 +5,23 @@ macro energy variables. Combines econometric validation (ADF, Granger causality,
 VAR) with machine learning (XGBoost) on 2021–2025 daily data.
 
 ## Research Question
-Can observable macro variables — gas-coal switching spreads, renewable generation
-share, weather — provide statistically significant predictive information for
+Can observable macro variables (e.g. gas-coal switching spreads, renewable generation
+share, weather) provide statistically significant predictive information for
 EUA price returns beyond the random walk? And does a causal ML model outperform
 an ARIMAX benchmark?
 
 ## Variables
-| Variable | Source | Causal Hypothesis |
+| Variable | Source | Causal / Modeling Hypothesis |
 |---|---|---|
-| TTF–Coal Spread | Yahoo Finance | Switching signal: high gas → more coal → more EUAs needed |
-| Renewable Share | ENTSO-E | High renewables → less fossil burn → EUA demand falls |
-| HDD/CDD | Open-Meteo | Temperature → energy demand → ETS compliance pressure |
-| Policy Dummies | Manual | Regulatory shocks produce discontinuous price jumps |
+| `eua_lag_x` (1, 5, 10, 21) | Yahoo Finance (KEUA) | **Autoregressive Anchor:** Captures market momentum, short-term trends, and structural price memory. |
+| `ttf_gas` | Yahoo Finance (UNG Proxy) | **Fuel Substitution Cost:** Baseline European natural gas tracking metric. |
+| `coal_price` | Yahoo Finance (BTU Proxy) | **Alternative Fuel Cost:** Background input for power sector generation margins. |
+| `gas_coal_spread` & lags | Engineered Feature | **Switching Signal:** High relative gas vs. coal costs shift power pools toward coal, increasing carbon allowance demand. |
+| `renewable_share` | ENTSO-E | **Grid Displacements:** High renewable penetration dampens fossil burn rates, easing compliance certificate demand. |
+| `fossil_share` | ENTSO-E | **Grid Intensity:** Direct scale factor for carbon-heavy base load asset deployment across the European grid. |
+| `HDD` / `CDD` / `temp` | Simulated Proxy Baseline | **Weather Load Shock:** Extreme temperature variations scale HVAC load demands across the grid, driving aggregate emissions. |
+| `policy_shock` | Manual Matrix | **Regulatory Interventions:** Captures discontinuous market shifts caused by policy changes or institutional adjustments. |
+| `month` | Engineered Feature | **Seasonal Cyclicality:** Proxies compliance calendars, winter heating demands, and summer industrial lulls. |
 
 ## Methodology & Leakage Protection
 To ensure strict real-world forecasting validity, this pipeline enforces a rigorous **Temporal Isolation Rule**. All contemporaneous target-derived features (such as `log_eua` or current-day returns) are explicitly dropped during feature selection. Input signals are lag-shifted ($t-1$, $t-5$, $t-10$) to prevent *Look-Ahead Bias*, forcing the model to predict true forward horizons rather than merely copying current-day market states.
