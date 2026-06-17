@@ -19,7 +19,17 @@ an ARIMAX benchmark?
 | Policy Dummies | Manual | Regulatory shocks produce discontinuous price jumps |
 
 ## Results
-[Insert your evaluation table and the OOS forecast chart here]
+### 🔑 Feature Importance Analysis
+
+The chart below shows the average gain contributions of our engineered features, highlighting the dominant structural drivers behind EUA price movements.
+
+![XGBoost Feature Importance](figures/feature_importance.png)
+
+### 📊 Out-of-Sample Performance
+
+Our model's backtested predictions are plotted against actual historical prices across the holdout validation set.
+
+![Out-of-Sample Forecast Evaluation](figures/oos_forecast.png)
 
 ## Key Findings
 - The gas-coal spread is the single highest-gain feature (XGBoost importance)
